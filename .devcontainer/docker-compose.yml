@@ -1,0 +1,42 @@
+version: '3.3'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ..:/workspace
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgreDB
+      - mongoDB
+
+  postgreDB:
+    image: postgres:14
+    container_name: postgreDB
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=stud
+      - POSTGRES_PASSWORD=stud
+      - POSTGRES_DB=archdb
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  mongoDB:
+    image: mongo:5.0
+    container_name: mongoDB
+    restart: on-failure
+    volumes:
+      - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
+      - mongoDBdata:/data/mongoDB
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: echo "db.runCommand('ping').ok" | mongosh localhost:27017/test --quiet
+
+volumes:
+  postgres-data:
+  mongoDBdata:
