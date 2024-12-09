@@ -1,2 +1,2 @@
-TABLE "users" - PostgreDB
+TABLE "users" - PostgreDB\n
 TABLE "Packages" - MongoDB
