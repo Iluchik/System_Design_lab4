@@ -5,10 +5,8 @@ from pydantic import BaseModel
 from typing import Optional
 import os
 
-DATABASE_URL_MONGO = os.getenv("DATABASE_URL", "mongodb://mongoDB:27017/")
-
+DATABASE_URL_MONGO = os.getenv("MONGO_URL", "mongodb://mongoDB:27017/")
 client = MongoClient(DATABASE_URL_MONGO)
-
 archdb = client["arch"]
 
 package_collection = archdb["packages"]
